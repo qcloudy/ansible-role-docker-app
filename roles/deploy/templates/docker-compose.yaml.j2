@@ -1,0 +1,6 @@
+version: "3.9"
+services:
+  {{ app_name }}:
+    image: {{ docker_registry }}/{{ project_name }}/{{ app_name }}:{{ image_tag }}
+    ports:
+      - "{{ app_port }}:{{ app_port }}"

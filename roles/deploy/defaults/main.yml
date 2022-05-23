@@ -1,0 +1,15 @@
+---
+# defaults file for docker-app-deploy
+
+owner_user: devops
+
+docker_compose_main_path: '/opt/docker/apps'
+docker_compose_path: '{{ docker_compose_main_path }}/{{ app_name }}'
+docker_compose_file: '/builds/{{ project_name }}/{{ app_name }}/docker-compose/{{ env }}.yaml'
+
+deploy_server_ssh_port: 22
+
+docker_registry: "dockerhub.io"
+docker_registry_login: true
+
+

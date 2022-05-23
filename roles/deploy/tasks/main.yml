@@ -1,0 +1,38 @@
+---
+
+- name: 'deploy | Ensure that {{ docker_compose_path }} exist'
+  file:
+    path: '{{ docker_compose_path }}'
+    state: directory
+    mode: '0755'
+    owner: '{{ owner_user }}'
+    group: '{{ owner_user }}'
+
+- name: 'deploy | Upload docker-compose'
+  copy:
+    src: '{{ docker_compose_file }}'
+    dest: '{{ docker_compose_path }}/docker-compose.yaml'
+    mode: '644'
+    owner: '{{ owner_user }}'
+    group: '{{ owner_user }}'
+    remote_src: no
+
+- name: 'deploy | Log into private docker registry'
+  command: 'docker login {{ docker_registry }} -u {{ docker_user }} -p {{ docker_password }}'
+  when: docker_registry_login | bool
+  no_log: true
+
+- name: 'deploy | Pull docker images'
+  command: 'docker-compose pull'
+  args:
+    chdir: '{{ docker_compose_path }}'
+
+- name: 'deploy | Logout of any docker registry'
+  command: 'docker logout'
+  when: docker_registry_login | bool
+  no_log: true
+
+- name: 'deploy | Deploy service'
+  command: 'docker-compose up -d'
+  args:
+    chdir: '{{ docker_compose_path }}'

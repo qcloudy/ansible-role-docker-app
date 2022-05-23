@@ -1,0 +1,10 @@
+---
+
+deploy_servers:
+  vars:
+    ansible_port: "{{ deploy_server_ssh_port }}"
+    ansible_python_interpreter: "/usr/bin/python3"
+  hosts:
+    app:
+      ansible_host: "{{ deploy_server_ip }}"
+
